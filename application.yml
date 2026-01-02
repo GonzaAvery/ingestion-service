@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ingestion-service
+  kafka:
+    bootstrap-servers: localhost:29092
+
+app:
+  kafka:
+    topic: wearable.metrics.v1
