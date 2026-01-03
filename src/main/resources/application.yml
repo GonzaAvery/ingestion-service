@@ -7,6 +7,21 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+
 app:
   kafka:
     topic: wearable.metrics.v1
