@@ -30,7 +30,7 @@ public class HealthEventProducer {
         this.topic = topic;
     }
 
-    public void publish(HealthEvent event) {
+    public void publish(HealthEvent event) throws KafkaPublishException {
         try {
             String message = objectMapper.writeValueAsString(event);
             String key = event.getUserId();
@@ -39,16 +39,24 @@ public class HealthEventProducer {
 
             future.whenComplete((result, ex) -> {
                 if (ex == null) {
-                    logger.debug("Event published successfully for userId: {}, offset: {}", 
-                            key, result.getRecordMetadata().offset());
+                    logger.info("Event published successfully eventId={} userId={} offset={}", 
+                            event.getEventId(), key, result.getRecordMetadata().offset());
                 } else {
-                    logger.error("Failed to publish event for userId: {}", key, ex);
+                    logger.error("Failed to publish event eventId={} userId={} correlationId={}", 
+                            event.getEventId(), key, event.getCorrelationId(), ex);
                 }
             });
 
         } catch (JsonProcessingException e) {
-            logger.error("Error serializing event for userId: {}", event.getUserId(), e);
-            throw new RuntimeException("Failed to serialize event", e);
+            logger.error("Error serializing event eventId={} userId={} correlationId={}", 
+                    event.getEventId(), event.getUserId(), event.getCorrelationId(), e);
+            throw new KafkaPublishException("Failed to serialize event", e);
+        }
+    }
+
+    public static class KafkaPublishException extends RuntimeException {
+        public KafkaPublishException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 }

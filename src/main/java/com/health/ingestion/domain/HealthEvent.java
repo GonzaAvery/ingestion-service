@@ -34,6 +34,12 @@ public class HealthEvent {
     @JsonProperty("attributes")
     private Map<String, Object> attributes;
 
+    @JsonProperty("eventId")
+    private String eventId;
+
+    @JsonProperty("correlationId")
+    private String correlationId;
+
     public HealthEvent() {
         this.schemaVersion = "1.0";
         this.ingestionTime = Instant.now().toEpochMilli();
@@ -109,6 +115,22 @@ public class HealthEvent {
 
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 }
 

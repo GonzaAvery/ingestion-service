@@ -22,6 +22,9 @@ public class ErrorResponse {
     @JsonProperty("errors")
     private List<String> errors;
 
+    @JsonProperty("correlationId")
+    private String correlationId;
+
     public ErrorResponse(int status, String error, String message) {
         this.timestamp = Instant.now().toEpochMilli();
         this.status = status;
@@ -35,6 +38,15 @@ public class ErrorResponse {
         this.error = error;
         this.message = message;
         this.errors = errors;
+    }
+
+    public ErrorResponse(int status, String error, String message, List<String> errors, String correlationId) {
+        this.timestamp = Instant.now().toEpochMilli();
+        this.status = status;
+        this.error = error;
+        this.message = message;
+        this.errors = errors;
+        this.correlationId = correlationId;
     }
 
     public Long getTimestamp() {
@@ -75,6 +87,14 @@ public class ErrorResponse {
 
     public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 }
 
